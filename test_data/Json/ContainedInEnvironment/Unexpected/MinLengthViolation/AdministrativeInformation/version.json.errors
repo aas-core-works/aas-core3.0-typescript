@@ -1,0 +1,2 @@
+.assetAdministrationShells[0].administration.version: The value must not be empty.
+.assetAdministrationShells[0].administration.version: Version type shall match the version pattern.

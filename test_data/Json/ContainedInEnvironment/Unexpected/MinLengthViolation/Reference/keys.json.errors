@@ -1,0 +1,2 @@
+.assetAdministrationShells[0]: Derived-from must be a model reference to an asset administration shell.
+.assetAdministrationShells[0].derivedFrom: Keys must contain at least one item.
