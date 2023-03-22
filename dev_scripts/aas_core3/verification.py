@@ -2236,13 +2236,6 @@ class _Transformer(
                 'Display name specifies no duplicate languages.'
             )
 
-        if not (that.id_short is not None):
-            yield Error(
-                'Constraint AASd-117: ID-short of Referables not being ' +
-                'a direct child of a Submodel element list shall be ' +
-                'specified.'
-            )
-
         if not (
             not (that.embedded_data_specifications is not None)
             or (len(that.embedded_data_specifications) >= 1)
@@ -2709,13 +2702,6 @@ class _Transformer(
                 'Display name specifies no duplicate languages.'
             )
 
-        if not (that.id_short is not None):
-            yield Error(
-                'Constraint AASd-117: ID-short of Referables not being ' +
-                'a direct child of a Submodel element list shall be ' +
-                'specified.'
-            )
-
         if not (
             not (that.supplemental_semantic_ids is not None)
             or (len(that.supplemental_semantic_ids) >= 1)
@@ -3115,13 +3101,6 @@ class _Transformer(
             yield Error(
                 'Embedded data specifications must be either not set or have ' +
                 'at least one item.'
-            )
-
-        if not (that.id_short is not None):
-            yield Error(
-                'Constraint AASd-117: ID-short of Referables not being ' +
-                'a direct child of a Submodel element list shall be ' +
-                'specified.'
             )
 
         if that.extensions is not None:
@@ -5689,13 +5668,6 @@ class _Transformer(
                 'at least one item.'
             )
 
-        if not (that.id_short is not None):
-            yield Error(
-                'Constraint AASd-117: ID-short of Referables not being ' +
-                'a direct child of a Submodel element list shall be ' +
-                'specified.'
-            )
-
         if not (
             not (that.annotations is not None)
             or (len(that.annotations) >= 1)
@@ -6044,7 +6016,8 @@ class _Transformer(
             )
                 or (
                     (
-                        (that.global_asset_id is None)
+                        that.entity_type != aas_types.EntityType.SELF_MANAGED_ENTITY
+                        and (that.global_asset_id is None)
                         and (that.specific_asset_ids is None)
                     )
                 )
@@ -6455,13 +6428,6 @@ class _Transformer(
             yield Error(
                 'Embedded data specifications must be either not set or have ' +
                 'at least one item.'
-            )
-
-        if not (that.id_short is not None):
-            yield Error(
-                'Constraint AASd-117: ID-short of Referables not being ' +
-                'a direct child of a Submodel element list shall be ' +
-                'specified.'
             )
 
         if not (
@@ -7330,13 +7296,6 @@ class _Transformer(
         ):
             yield Error(
                 'Display name specifies no duplicate languages.'
-            )
-
-        if not (that.id_short is not None):
-            yield Error(
-                'Constraint AASd-117: ID-short of Referables not being ' +
-                'a direct child of a Submodel element list shall be ' +
-                'specified.'
             )
 
         if not (
