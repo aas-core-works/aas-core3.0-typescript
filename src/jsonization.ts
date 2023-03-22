@@ -1791,12 +1791,6 @@ export function assetAdministrationShellFromJsonable(
     }
   }
 
-  if (setter.idShort === null) {
-    return newDeserializationError<AasTypes.AssetAdministrationShell>(
-      "The required property 'idShort' is missing"
-    );
-  }
-
   if (setter.id === null) {
     return newDeserializationError<AasTypes.AssetAdministrationShell>(
       "The required property 'id' is missing"
@@ -1811,11 +1805,11 @@ export function assetAdministrationShellFromJsonable(
 
   return new AasCommon.Either<AasTypes.AssetAdministrationShell, DeserializationError>(
     new AasTypes.AssetAdministrationShell(
-      setter.idShort,
       setter.id,
       setter.assetInformation,
       setter.extensions,
       setter.category,
+      setter.idShort,
       setter.displayName,
       setter.description,
       setter.administration,
@@ -2876,12 +2870,6 @@ export function submodelFromJsonable(
     }
   }
 
-  if (setter.idShort === null) {
-    return newDeserializationError<AasTypes.Submodel>(
-      "The required property 'idShort' is missing"
-    );
-  }
-
   if (setter.id === null) {
     return newDeserializationError<AasTypes.Submodel>(
       "The required property 'id' is missing"
@@ -2890,10 +2878,10 @@ export function submodelFromJsonable(
 
   return new AasCommon.Either<AasTypes.Submodel, DeserializationError>(
     new AasTypes.Submodel(
-      setter.idShort,
       setter.id,
       setter.extensions,
       setter.category,
+      setter.idShort,
       setter.displayName,
       setter.description,
       setter.administration,
@@ -10775,12 +10763,6 @@ export function conceptDescriptionFromJsonable(
     }
   }
 
-  if (setter.idShort === null) {
-    return newDeserializationError<AasTypes.ConceptDescription>(
-      "The required property 'idShort' is missing"
-    );
-  }
-
   if (setter.id === null) {
     return newDeserializationError<AasTypes.ConceptDescription>(
       "The required property 'id' is missing"
@@ -10789,10 +10771,10 @@ export function conceptDescriptionFromJsonable(
 
   return new AasCommon.Either<AasTypes.ConceptDescription, DeserializationError>(
     new AasTypes.ConceptDescription(
-      setter.idShort,
       setter.id,
       setter.extensions,
       setter.category,
+      setter.idShort,
       setter.displayName,
       setter.description,
       setter.administration,
@@ -14207,7 +14189,9 @@ class Serializer extends AasTypes.AbstractTransformer<JsonObject> {
       jsonable["category"] = that.category;
     }
 
-    jsonable["idShort"] = that.idShort;
+    if (that.idShort !== null) {
+      jsonable["idShort"] = that.idShort;
+    }
 
     if (that.displayName !== null) {
       const displayNameArray = new Array<JsonObject>();
@@ -14363,7 +14347,9 @@ class Serializer extends AasTypes.AbstractTransformer<JsonObject> {
       jsonable["category"] = that.category;
     }
 
-    jsonable["idShort"] = that.idShort;
+    if (that.idShort !== null) {
+      jsonable["idShort"] = that.idShort;
+    }
 
     if (that.displayName !== null) {
       const displayNameArray = new Array<JsonObject>();
@@ -15718,7 +15704,9 @@ class Serializer extends AasTypes.AbstractTransformer<JsonObject> {
       jsonable["category"] = that.category;
     }
 
-    jsonable["idShort"] = that.idShort;
+    if (that.idShort !== null) {
+      jsonable["idShort"] = that.idShort;
+    }
 
     if (that.displayName !== null) {
       const displayNameArray = new Array<JsonObject>();

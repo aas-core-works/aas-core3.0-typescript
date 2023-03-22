@@ -2469,9 +2469,11 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       }
     }
 
-    for (const error of verifyIdShortType(that.idShort)) {
-      error.path.prepend(new PropertySegment(that, "idShort"));
-      yield error;
+    if (that.idShort !== null) {
+      for (const error of verifyIdShortType(that.idShort)) {
+        error.path.prepend(new PropertySegment(that, "idShort"));
+        yield error;
+      }
     }
 
     for (const error of verifyIdentifier(that.id)) {
@@ -2929,9 +2931,11 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       }
     }
 
-    for (const error of verifyIdShortType(that.idShort)) {
-      error.path.prepend(new PropertySegment(that, "idShort"));
-      yield error;
+    if (that.idShort !== null) {
+      for (const error of verifyIdShortType(that.idShort)) {
+        error.path.prepend(new PropertySegment(that, "idShort"));
+        yield error;
+      }
     }
 
     for (const error of verifyIdentifier(that.id)) {
@@ -5502,7 +5506,9 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
             (that.globalAssetId === null &&
               that.specificAssetIds !== null &&
               that.specificAssetIds.length >= 1))) ||
-        (that.globalAssetId === null && that.specificAssetIds === null)
+        (that.entityType != AasTypes.EntityType.SelfManagedEntity &&
+          that.globalAssetId === null &&
+          that.specificAssetIds === null)
       )
     ) {
       yield new VerificationError(
@@ -6644,9 +6650,11 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       }
     }
 
-    for (const error of verifyIdShortType(that.idShort)) {
-      error.path.prepend(new PropertySegment(that, "idShort"));
-      yield error;
+    if (that.idShort !== null) {
+      for (const error of verifyIdShortType(that.idShort)) {
+        error.path.prepend(new PropertySegment(that, "idShort"));
+        yield error;
+      }
     }
 
     for (const error of verifyIdentifier(that.id)) {
