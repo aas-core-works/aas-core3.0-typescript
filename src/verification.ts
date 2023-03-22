@@ -2418,14 +2418,6 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       yield new VerificationError("Display name specifies no duplicate languages.");
     }
 
-    if (!(that.idShort !== null)) {
-      yield new VerificationError(
-        "Constraint AASd-117: ID-short of Referables not being " +
-          "a direct child of a Submodel element list shall be " +
-          "specified."
-      );
-    }
-
     if (
       !(
         !(that.embeddedDataSpecifications !== null) ||
@@ -2477,11 +2469,9 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       }
     }
 
-    if (that.idShort !== null) {
-      for (const error of verifyIdShortType(that.idShort)) {
-        error.path.prepend(new PropertySegment(that, "idShort"));
-        yield error;
-      }
+    for (const error of verifyIdShortType(that.idShort)) {
+      error.path.prepend(new PropertySegment(that, "idShort"));
+      yield error;
     }
 
     for (const error of verifyIdentifier(that.id)) {
@@ -2804,14 +2794,6 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       yield new VerificationError("Display name specifies no duplicate languages.");
     }
 
-    if (!(that.idShort !== null)) {
-      yield new VerificationError(
-        "Constraint AASd-117: ID-short of Referables not being " +
-          "a direct child of a Submodel element list shall be " +
-          "specified."
-      );
-    }
-
     if (
       !(
         !(that.supplementalSemanticIds !== null) ||
@@ -2947,11 +2929,9 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       }
     }
 
-    if (that.idShort !== null) {
-      for (const error of verifyIdShortType(that.idShort)) {
-        error.path.prepend(new PropertySegment(that, "idShort"));
-        yield error;
-      }
+    for (const error of verifyIdShortType(that.idShort)) {
+      error.path.prepend(new PropertySegment(that, "idShort"));
+      yield error;
     }
 
     for (const error of verifyIdentifier(that.id)) {
@@ -3158,14 +3138,6 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       yield new VerificationError(
         "Embedded data specifications must be either not set or have " +
           "at least one item."
-      );
-    }
-
-    if (!(that.idShort !== null)) {
-      yield new VerificationError(
-        "Constraint AASd-117: ID-short of Referables not being " +
-          "a direct child of a Submodel element list shall be " +
-          "specified."
       );
     }
 
@@ -5264,14 +5236,6 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       );
     }
 
-    if (!(that.idShort !== null)) {
-      yield new VerificationError(
-        "Constraint AASd-117: ID-short of Referables not being " +
-          "a direct child of a Submodel element list shall be " +
-          "specified."
-      );
-    }
-
     if (!(!(that.annotations !== null) || that.annotations.length >= 1)) {
       yield new VerificationError(
         "Annotations must be either not set or have at least one " + "item."
@@ -5859,14 +5823,6 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       yield new VerificationError(
         "Embedded data specifications must be either not set or have " +
           "at least one item."
-      );
-    }
-
-    if (!(that.idShort !== null)) {
-      yield new VerificationError(
-        "Constraint AASd-117: ID-short of Referables not being " +
-          "a direct child of a Submodel element list shall be " +
-          "specified."
       );
     }
 
@@ -6566,14 +6522,6 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       yield new VerificationError("Display name specifies no duplicate languages.");
     }
 
-    if (!(that.idShort !== null)) {
-      yield new VerificationError(
-        "Constraint AASd-117: ID-short of Referables not being " +
-          "a direct child of a Submodel element list shall be " +
-          "specified."
-      );
-    }
-
     if (
       !(
         !(that.embeddedDataSpecifications !== null) ||
@@ -6696,11 +6644,9 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       }
     }
 
-    if (that.idShort !== null) {
-      for (const error of verifyIdShortType(that.idShort)) {
-        error.path.prepend(new PropertySegment(that, "idShort"));
-        yield error;
-      }
+    for (const error of verifyIdShortType(that.idShort)) {
+      error.path.prepend(new PropertySegment(that, "idShort"));
+      yield error;
     }
 
     for (const error of verifyIdentifier(that.id)) {

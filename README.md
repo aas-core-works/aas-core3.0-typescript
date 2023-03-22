@@ -117,6 +117,7 @@ anotherElement.value = new Uint8Array([0xDE, 0xAD, 0xC0, 0xDE]);
 
 // Nest the elements in a submodel
 const submodel = new aas.types.Submodel(
+  "someIdShort",
   "some-unique-global-identifier"
 );
 submodel.submodelElements = [
@@ -299,6 +300,7 @@ yetAnotherElement.idShort = "yetAnotherProperty";
 yetAnotherElement.value = "1986";
 
 const submodel = new aas.types.Submodel(
+  "someIdShort",
   "some-unique-global-identifier"
 );
 submodel.submodelElements = [
@@ -384,6 +386,7 @@ yetAnotherElement.idShort = "yetAnotherProperty";
 yetAnotherElement.value = "1986";
 
 const submodel = new aas.types.Submodel(
+  "someIdShort",
   "some-unique-global-identifier"
 );
 submodel.submodelElements = [
@@ -522,6 +525,7 @@ someElement.idShort = "some-property";
 someElement.value = "1984";
 
 const submodel = new aas.types.Submodel(
+  "someIdShort",
   "some-unique-global-identifier"
 );
 submodel.submodelElements = [someElement];
@@ -604,6 +608,7 @@ someElement.idShort = "someProperty";
 someElement.value = "1984";
 
 const submodel = new aas.types.Submodel(
+  "someIdShort",
   "some-unique-global-identifier"
 );
 submodel.submodelElements = [someElement];
@@ -622,6 +627,7 @@ console.log(text);
 // {
 //   "submodels": [
 //     {
+//       "idShort": "someIdShort",
 //       "id": "some-unique-global-identifier",
 //       "submodelElements": [
 //         {
@@ -672,6 +678,7 @@ const text = `
 {
   "submodels": [
     {
+      "idShort": "someIdShort",
       "id": "some-unique-global-identifier",
       "submodelElements": [
         {
