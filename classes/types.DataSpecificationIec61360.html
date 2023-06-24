@@ -21,28 +21,32 @@
 values and value lists conformant to IEC 61360.</p>
 
 <h3>Remarks</h3><p><strong>Note</strong>:
-It is also possible that both <a href="types.DataSpecificationIec61360.html#value">value</a> and <a href="types.DataSpecificationIec61360.html#valueList">valueList</a> are empty.
-This is the case for concept descriptions that define the semantics of a
-property but do not have an enumeration (<a href="types.DataSpecificationIec61360.html#valueList">valueList</a>) as data type.</p>
+IEC61360 requires also a globally unique identifier for a concept
+description. This ID is not part of the data specification template.
+Instead the <a href="types.ConceptDescription.html#id">id</a> as inherited via
+<a href="../interfaces/types.IIdentifiable.html">IIdentifiable</a> is used. Same holds for administrative
+information like the version and revision.</p>
+<p><strong>Note</strong>:
+<a href="types.ConceptDescription.html#idShort">idShort</a> and <a href="types.DataSpecificationIec61360.html#shortName">shortName</a> are very
+similar. However, in this case the decision was to add
+<a href="types.DataSpecificationIec61360.html#shortName">shortName</a> explicitly to the data specification. Same holds for
+<a href="types.ConceptDescription.html#displayName">displayName</a> and
+<a href="types.DataSpecificationIec61360.html#preferredName">preferredName</a>. Same holds for
+<a href="types.ConceptDescription.html#description">description</a> and <a href="types.DataSpecificationIec61360.html#definition">definition</a>.</p>
+<p>Constraint <code>AASc-3a-010</code>:
+If <a href="types.DataSpecificationIec61360.html#value">value</a> is not empty then <a href="types.DataSpecificationIec61360.html#valueList">valueList</a> shall be empty
+and vice versa.</p>
+<p><strong>Note</strong>:
+It is also possible that both <a href="types.DataSpecificationIec61360.html#value">value</a> and <a href="types.DataSpecificationIec61360.html#valueList">valueList</a> are
+empty. This is the case for concept descriptions that define the semantics
+of a property but do not have an enumeration (<a href="types.DataSpecificationIec61360.html#valueList">valueList</a>) as
+data type.</p>
 <p><strong>Note</strong>:
 Although it is possible to define a <a href="types.ConceptDescription.html">ConceptDescription</a> for a
 :attr:´value_list`,
 it is not possible to reuse this {@link DataSpecificationIec61360.valueList}.
 It is only possible to directly add a {@link DataSpecificationIec61360.valueList} as data type
 to a specific semantic definition of a property.</p>
-<p><strong>Note</strong>:
-IEC61360 requires also a globally unique identifier for a concept
-description. This ID is not part of the data specification template.
-Instead the {@link ConceptDescription.id} as inherited via
-{@link IIdentifiable} is used. Same holds for administrative
-information like the version and revision.</p>
-<p><strong>Note</strong>:
-{@link ConceptDescription.idShort} and {@link DataSpecificationIec61360.shortName} are very
-similar. However, in this case the decision was to add
-{@link DataSpecificationIec61360.shortName} explicitly to the data specification. Same holds for
-{@link ConceptDescription.displayName} and
-{@link DataSpecificationIec61360.preferredName}. Same holds for
-{@link ConceptDescription.description} and {@link DataSpecificationIec61360.definition}.</p>
 <p>Constraint <code>AASc-3a-009</code>:
 If <a href="types.DataSpecificationIec61360.html#dataType">dataType</a> one of:
 <a href="../enums/types.DataTypeIec61360.html#IntegerMeasure">IntegerMeasure</a>,
@@ -63,7 +67,7 @@ If <a href="types.DataSpecificationIec61360.html#dataType">dataType</a> one of:
 <ul class="tsd-hierarchy">
 <li><a href="../interfaces/types.IDataSpecificationContent.html" class="tsd-signature-type" data-tsd-kind="Interface">IDataSpecificationContent</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10274">types.ts:10274</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10305">types.ts:10305</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -136,7 +140,7 @@ If <a href="types.DataSpecificationIec61360.html#dataType">dataType</a> one of:
 <h4 class="tsd-returns-title">Returns <a href="types.DataSpecificationIec61360.html" class="tsd-signature-type" data-tsd-kind="Class">DataSpecificationIec61360</a></h4><aside class="tsd-sources">
 <p>Overrides <a href="types.Class.html">Class</a>.<a href="types.Class.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10504">types.ts:10504</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10535">types.ts:10535</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="dataType" class="tsd-anchor"></a>
@@ -145,21 +149,21 @@ If <a href="types.DataSpecificationIec61360.html#dataType">dataType</a> one of:
 <div class="tsd-comment tsd-typography"><p>Data Type</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10325">types.ts:10325</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10356">types.ts:10356</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="definition" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>definition</span><a href="#definition" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">definition<span class="tsd-signature-symbol">:</span> <a href="types.LangStringDefinitionTypeIec61360.html" class="tsd-signature-type" data-tsd-kind="Class">LangStringDefinitionTypeIec61360</a><span class="tsd-signature-symbol">[]</span></div>
 <div class="tsd-comment tsd-typography"><p>Definition in different languages</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10330">types.ts:10330</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10361">types.ts:10361</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="levelType" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>level<wbr/>Type</span><a href="#levelType" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">level<wbr/>Type<span class="tsd-signature-symbol">:</span> <a href="types.LevelType.html" class="tsd-signature-type" data-tsd-kind="Class">LevelType</a></div>
 <div class="tsd-comment tsd-typography"><p>Set of levels.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10354">types.ts:10354</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10385">types.ts:10385</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="preferredName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>preferred<wbr/>Name</span><a href="#preferredName" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">preferred<wbr/>Name<span class="tsd-signature-symbol">:</span> <a href="types.LangStringPreferredNameTypeIec61360.html" class="tsd-signature-type" data-tsd-kind="Class">LangStringPreferredNameTypeIec61360</a><span class="tsd-signature-symbol">[]</span></div>
@@ -171,35 +175,35 @@ It is advised to keep the length of the name limited to 35 characters.</p>
 <a href="types.DataSpecificationIec61360.html#preferredName">preferredName</a> shall be provided at least in English.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10288">types.ts:10288</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10319">types.ts:10319</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="shortName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>short<wbr/>Name</span><a href="#shortName" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">short<wbr/>Name<span class="tsd-signature-symbol">:</span> <a href="types.LangStringShortNameTypeIec61360.html" class="tsd-signature-type" data-tsd-kind="Class">LangStringShortNameTypeIec61360</a><span class="tsd-signature-symbol">[]</span></div>
 <div class="tsd-comment tsd-typography"><p>Short name</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10293">types.ts:10293</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10324">types.ts:10324</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="sourceOfDefinition" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>source<wbr/>Of<wbr/>Definition</span><a href="#sourceOfDefinition" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">source<wbr/>Of<wbr/>Definition<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Source of definition</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10315">types.ts:10315</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10346">types.ts:10346</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="symbol" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>symbol</span><a href="#symbol" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">symbol<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Symbol</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10320">types.ts:10320</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10351">types.ts:10351</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="unit" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>unit</span><a href="#unit" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">unit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Unit</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10298">types.ts:10298</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10329">types.ts:10329</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="unitId" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>unit<wbr/>Id</span><a href="#unitId" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">unit<wbr/>Id<span class="tsd-signature-symbol">:</span> <a href="types.Reference.html" class="tsd-signature-type" data-tsd-kind="Class">Reference</a></div>
@@ -211,14 +215,14 @@ are set</p>
 It is recommended to use an external reference ID.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10310">types.ts:10310</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10341">types.ts:10341</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="value" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>value</span><a href="#value" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Value</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10349">types.ts:10349</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10380">types.ts:10380</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="valueFormat" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>value<wbr/>Format</span><a href="#valueFormat" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">value<wbr/>Format<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -228,14 +232,14 @@ It is recommended to use an external reference ID.</p>
 The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10339">types.ts:10339</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10370">types.ts:10370</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="valueList" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>value<wbr/>List</span><a href="#valueList" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">value<wbr/>List<span class="tsd-signature-symbol">:</span> <a href="types.ValueList.html" class="tsd-signature-type" data-tsd-kind="Class">ValueList</a></div>
 <div class="tsd-comment tsd-typography"><p>List of allowed values</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10344">types.ts:10344</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10375">types.ts:10375</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="accept" class="tsd-anchor"></a>
@@ -256,7 +260,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 <p>Implementation of <a href="../interfaces/types.IDataSpecificationContent.html">IDataSpecificationContent</a>.<a href="../interfaces/types.IDataSpecificationContent.html#accept">accept</a></p>
 <p>Overrides <a href="types.Class.html">Class</a>.<a href="types.Class.html#accept">accept</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10459">types.ts:10459</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10490">types.ts:10490</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="acceptWithContext" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>accept<wbr/>With<wbr/>Context</span><a href="#acceptWithContext" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -286,7 +290,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 <p>Implementation of <a href="../interfaces/types.IDataSpecificationContent.html">IDataSpecificationContent</a>.<a href="../interfaces/types.IDataSpecificationContent.html#acceptWithContext">acceptWithContext</a></p>
 <p>Overrides <a href="types.Class.html">Class</a>.<a href="types.Class.html#acceptWithContext">acceptWithContext</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10470">types.ts:10470</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10501">types.ts:10501</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="descend" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>descend</span><a href="#descend" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -300,7 +304,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 <p>Implementation of <a href="../interfaces/types.IDataSpecificationContent.html">IDataSpecificationContent</a>.<a href="../interfaces/types.IDataSpecificationContent.html#descend">descend</a></p>
 <p>Overrides <a href="types.Class.html">Class</a>.<a href="types.Class.html#descend">descend</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10412">types.ts:10412</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10443">types.ts:10443</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="descendOnce" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>descend<wbr/>Once</span><a href="#descendOnce" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -315,7 +319,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 <p>Implementation of <a href="../interfaces/types.IDataSpecificationContent.html">IDataSpecificationContent</a>.<a href="../interfaces/types.IDataSpecificationContent.html#descendOnce">descendOnce</a></p>
 <p>Overrides <a href="types.Class.html">Class</a>.<a href="types.Class.html#descendOnce">descendOnce</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10383">types.ts:10383</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10414">types.ts:10414</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="overDefinitionOrEmpty" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>over<wbr/>Definition<wbr/>Or<wbr/>Empty</span><a href="#overDefinitionOrEmpty" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -325,7 +329,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="types.LangStringDefinitionTypeIec61360.html" class="tsd-signature-type" data-tsd-kind="Class">LangStringDefinitionTypeIec61360</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10369">types.ts:10369</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10400">types.ts:10400</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="overShortNameOrEmpty" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>over<wbr/>Short<wbr/>Name<wbr/>Or<wbr/>Empty</span><a href="#overShortNameOrEmpty" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -335,7 +339,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">IterableIterator</span><span class="tsd-signature-symbol">&lt;</span><a href="types.LangStringShortNameTypeIec61360.html" class="tsd-signature-type" data-tsd-kind="Class">LangStringShortNameTypeIec61360</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10359">types.ts:10359</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10390">types.ts:10390</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="transform" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>transform</span><a href="#transform" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -363,7 +367,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 <p>Implementation of <a href="../interfaces/types.IDataSpecificationContent.html">IDataSpecificationContent</a>.<a href="../interfaces/types.IDataSpecificationContent.html#transform">transform</a></p>
 <p>Overrides <a href="types.Class.html">Class</a>.<a href="types.Class.html#transform">transform</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10484">types.ts:10484</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10515">types.ts:10515</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="transformWithContext" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>transform<wbr/>With<wbr/>Context</span><a href="#transformWithContext" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -399,7 +403,7 @@ The value format is based on ISO 13584-42 and IEC 61360-2.</p>
 <p>Implementation of <a href="../interfaces/types.IDataSpecificationContent.html">IDataSpecificationContent</a>.<a href="../interfaces/types.IDataSpecificationContent.html#transformWithContext">transformWithContext</a></p>
 <p>Overrides <a href="types.Class.html">Class</a>.<a href="types.Class.html#transformWithContext">transformWithContext</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/9d01794/src/types.ts#L10497">types.ts:10497</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/aas-core-works/aas-core3.0-typescript/blob/6dc9bc8/src/types.ts#L10528">types.ts:10528</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
