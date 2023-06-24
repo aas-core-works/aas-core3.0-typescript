@@ -2580,7 +2580,8 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
             that.specificAssetIds,
             (specificAssetId) =>
               specificAssetId.name != "globalAssetId" ||
-              (specificAssetId.name == "globalAssetId" &&
+              (that.globalAssetId !== null &&
+                specificAssetId.name == "globalAssetId" &&
                 specificAssetId.value == that.globalAssetId)
           )
         )
@@ -2875,7 +2876,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     if (
       !(
         !(that.submodelElements !== null) ||
-        !(that.kind != AasTypes.ModellingKind.Template) ||
+        !(that.kindOrDefault() != AasTypes.ModellingKind.Template) ||
         AasCommon.every(
           AasCommon.map(
             that.submodelElements,
@@ -7203,7 +7204,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     if (
       !(
         !(
-          that.dataType === null &&
+          that.dataType !== null &&
           AasConstants.IEC_61360_DATA_TYPES_WITH_UNIT.has(that.dataType)
         ) ||
         that.unit !== null ||
