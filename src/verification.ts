@@ -24,6 +24,11 @@ import * as AasCommon from "./common";
 import * as AasConstants from "./constants";
 import * as AasTypes from "./types";
 
+// The generated code might contain deliberately double negations. For example,
+// when the constraint is formulated as a NAND and we check that the constraint
+// is not fulfilled. Therefore, we disable this linting rule.
+/* eslint no-extra-boolean-cast: 0 */
+
 /**
  * Represent a property access on a path to an erroneous value.
  */
@@ -2597,10 +2602,8 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
 
     if (
       !(
-        (that.globalAssetId !== null && that.specificAssetIds === null) ||
-        (that.globalAssetId === null &&
-          that.specificAssetIds !== null &&
-          that.specificAssetIds.length >= 1)
+        (that.globalAssetId !== null || that.specificAssetIds !== null) &&
+        (!(that.specificAssetIds !== null) || that.specificAssetIds.length >= 1)
       )
     ) {
       yield new VerificationError(
@@ -7187,14 +7190,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     that: AasTypes.DataSpecificationIec61360,
     context: boolean
   ): IterableIterator<VerificationError> {
-    if (
-      !(
-        (that.value !== null && that.valueList === null) ||
-        (that.value === null &&
-          that.valueList !== null &&
-          that.valueList.valueReferencePairs.length >= 1)
-      )
-    ) {
+    if (!!(that.value !== null && that.valueList !== null)) {
       yield new VerificationError(
         "Constraint AASc-3a-010: If value is not empty then value " +
           "list shall be empty and vice versa."

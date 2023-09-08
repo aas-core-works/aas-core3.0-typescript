@@ -30,8 +30,8 @@ setup(
     packages=find_packages(exclude=["tests", "continuous_integration", "dev_scripts"]),
     install_requires=[
         "icontract>=2.6.1,<3",
-        "aas-core-meta@git+https://github.com/aas-core-works/aas-core-meta@44756fb#egg=aas-core-meta",
-        "aas-core-codegen@git+https://github.com/aas-core-works/aas-core-codegen@607f65c#egg=aas-core-codegen"
+        "aas-core-meta@git+https://github.com/aas-core-works/aas-core-meta@4d7e59e#egg=aas-core-meta",
+        "aas-core-codegen@git+https://github.com/aas-core-works/aas-core-codegen@7e264a0#egg=aas-core-codegen"
     ],
     py_modules=["test_codegen"],
 )
