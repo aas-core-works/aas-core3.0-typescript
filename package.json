@@ -65,7 +65,13 @@
   "types": "dist/types/index.d.ts",
   "exports": {
     "require": "./dist/lib/cjs/index.js",
-    "import": "./dist/lib/esm/index.js"
+    "import": "./dist/lib/esm/index.js",
+    "./common": "./dist/types/common.d.ts",
+    "./constants": "./dist/constants.d.ts",
+    "./jsonization": "./dist/types/jsonization.d.ts",
+    "./stringification": "./dist/types/stringification.d.ts",
+    "./types": "./dist/types/types.d.ts",
+    "./verification": "./dist/types/verification.d.ts"
   },
   "files": [
     "dist"
