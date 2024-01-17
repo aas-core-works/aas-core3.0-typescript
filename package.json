@@ -64,14 +64,50 @@
   "module": "dist/lib/esm/index.js",
   "types": "dist/types/index.d.ts",
   "exports": {
-    "require": "./dist/lib/cjs/index.js",
-    "import": "./dist/lib/esm/index.js",
-    "./common": "./dist/types/common.d.ts",
-    "./constants": "./dist/constants.d.ts",
-    "./jsonization": "./dist/types/jsonization.d.ts",
-    "./stringification": "./dist/types/stringification.d.ts",
-    "./types": "./dist/types/types.d.ts",
-    "./verification": "./dist/types/verification.d.ts"
+    ".": {
+      "require": "./dist/lib/cjs/index.js",
+      "import": "./dist/lib/esm/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./types": {
+      "require": "./dist/lib/cjs/types.js",
+      "import": "./dist/lib/esm/types.js",
+      "types": "./dist/types/types.d.ts"
+    },
+    "./jsonization": {
+      "require": "./dist/lib/cjs/jsonization.js",
+      "import": "./dist/lib/esm/jsonization.js",
+      "types": "./dist/types/jsonization.d.ts"
+    },
+    "./stringification": {
+      "require": "./dist/lib/cjs/stringification.js",
+      "import": "./dist/lib/esm/stringification.js",
+      "types": "./dist/types/stringification.d.ts"
+    },
+    "./verification": {
+      "require": "./dist/lib/cjs/verification.js",
+      "import": "./dist/lib/esm/verification.js",
+      "types": "./dist/types/verification.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types/index.d.ts"
+      ],
+      "types": [
+        "./dist/types/types.d.ts"
+      ],
+      "jsonization": [
+        "./dist/types/jsonization.d.ts"
+      ],
+      "stringification": [
+        "./dist/types/stringification.d.ts"
+      ],
+      "verification": [
+        "./dist/types/verification.d.ts"
+      ]
+    }
   },
   "files": [
     "dist"
