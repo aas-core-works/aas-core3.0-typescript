@@ -93,9 +93,111 @@
 // Do NOT edit or append.
 
 /**
+ * Represent runtime model type of an instance.
+ */
+export enum ModelType {
+  Extension = 0,
+  AdministrativeInformation = 1,
+  Qualifier = 2,
+  AssetAdministrationShell = 3,
+  AssetInformation = 4,
+  Resource = 5,
+  SpecificAssetId = 6,
+  Submodel = 7,
+  RelationshipElement = 8,
+  SubmodelElementList = 9,
+  SubmodelElementCollection = 10,
+  Property = 11,
+  MultiLanguageProperty = 12,
+  Range = 13,
+  ReferenceElement = 14,
+  Blob = 15,
+  File = 16,
+  AnnotatedRelationshipElement = 17,
+  Entity = 18,
+  EventPayload = 19,
+  BasicEventElement = 20,
+  Operation = 21,
+  OperationVariable = 22,
+  Capability = 23,
+  ConceptDescription = 24,
+  Reference = 25,
+  Key = 26,
+  LangStringNameType = 27,
+  LangStringTextType = 28,
+  Environment = 29,
+  EmbeddedDataSpecification = 30,
+  LevelType = 31,
+  ValueReferencePair = 32,
+  ValueList = 33,
+  LangStringPreferredNameTypeIec61360 = 34,
+  LangStringShortNameTypeIec61360 = 35,
+  LangStringDefinitionTypeIec61360 = 36,
+  DataSpecificationIec61360 = 37
+}
+
+/**
+ * Iterate over the literals of {@link ModelType}.
+ *
+ * @remark
+ * TypeScript does not provide an elegant way to iterate over the literals, so
+ * this function helps you avoid common errors and pitfalls.
+ *
+ * @return iterator over the literals
+ */
+export function* overModelType(): Iterable<ModelType> {
+  // NOTE (mristin, 2022-12-03):
+  // We yield numbers instead of literals to avoid name lookups on platforms
+  // which do not provide JIT compilation of hot paths.
+  yield <ModelType>0; // Extension
+  yield <ModelType>1; // AdministrativeInformation
+  yield <ModelType>2; // Qualifier
+  yield <ModelType>3; // AssetAdministrationShell
+  yield <ModelType>4; // AssetInformation
+  yield <ModelType>5; // Resource
+  yield <ModelType>6; // SpecificAssetId
+  yield <ModelType>7; // Submodel
+  yield <ModelType>8; // RelationshipElement
+  yield <ModelType>9; // SubmodelElementList
+  yield <ModelType>10; // SubmodelElementCollection
+  yield <ModelType>11; // Property
+  yield <ModelType>12; // MultiLanguageProperty
+  yield <ModelType>13; // Range
+  yield <ModelType>14; // ReferenceElement
+  yield <ModelType>15; // Blob
+  yield <ModelType>16; // File
+  yield <ModelType>17; // AnnotatedRelationshipElement
+  yield <ModelType>18; // Entity
+  yield <ModelType>19; // EventPayload
+  yield <ModelType>20; // BasicEventElement
+  yield <ModelType>21; // Operation
+  yield <ModelType>22; // OperationVariable
+  yield <ModelType>23; // Capability
+  yield <ModelType>24; // ConceptDescription
+  yield <ModelType>25; // Reference
+  yield <ModelType>26; // Key
+  yield <ModelType>27; // LangStringNameType
+  yield <ModelType>28; // LangStringTextType
+  yield <ModelType>29; // Environment
+  yield <ModelType>30; // EmbeddedDataSpecification
+  yield <ModelType>31; // LevelType
+  yield <ModelType>32; // ValueReferencePair
+  yield <ModelType>33; // ValueList
+  yield <ModelType>34; // LangStringPreferredNameTypeIec61360
+  yield <ModelType>35; // LangStringShortNameTypeIec61360
+  yield <ModelType>36; // LangStringDefinitionTypeIec61360
+  yield <ModelType>37; // DataSpecificationIec61360
+}
+
+/**
  * Represent the most general class of an AAS model.
  */
 export abstract class Class {
+  /**
+   * Indicate the runtime model type of an instance.
+   */
+  abstract modelType(): ModelType;
+
   /**
    * Iterate over all the instances referenced from this one.
    */
@@ -187,6 +289,16 @@ export interface IHasSemantics extends Class {
  * Single extension of an element.
  */
 export class Extension extends Class implements IHasSemantics {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>0; // Extension
+  }
+
   /**
    * Identifier of the semantic definition of the element. It is called semantic ID
    * of the element or also main semantic ID of the element.
@@ -573,6 +685,16 @@ export interface IHasDataSpecification extends Class {
  */
 export class AdministrativeInformation extends Class implements IHasDataSpecification {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>1; // AdministrativeInformation
+  }
+
+  /**
    * Embedded data specification.
    */
   embeddedDataSpecifications: Array<EmbeddedDataSpecification> | null;
@@ -821,6 +943,16 @@ export function* overQualifierKind(): IterableIterator<QualifierKind> {
  */
 export class Qualifier extends Class implements IHasSemantics {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>2; // Qualifier
+  }
+
+  /**
    * Identifier of the semantic definition of the element. It is called semantic ID
    * of the element or also main semantic ID of the element.
    *
@@ -1016,6 +1148,16 @@ export class AssetAdministrationShell
   extends Class
   implements IIdentifiable, IHasDataSpecification
 {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>3; // AssetAdministrationShell
+  }
+
   /**
    * An extension of the element.
    */
@@ -1380,6 +1522,16 @@ export class AssetAdministrationShell
  */
 export class AssetInformation extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>4; // AssetInformation
+  }
+
+  /**
    * Denotes whether the Asset is of kind {@link AssetKind.Type} or
    * {@link AssetKind.Instance}.
    */
@@ -1546,6 +1698,16 @@ export class AssetInformation extends Class {
  */
 export class Resource extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>5; // Resource
+  }
+
+  /**
    * Path and name of the resource (with file extension).
    *
    * @remarks
@@ -1686,6 +1848,16 @@ export function* overAssetKind(): IterableIterator<AssetKind> {
  * i.e. {@link Reference.type} = {@link ReferenceTypes.ExternalReference}.
  */
 export class SpecificAssetId extends Class implements IHasSemantics {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>6; // SpecificAssetId
+  }
+
   /**
    * Identifier of the semantic definition of the element. It is called semantic ID
    * of the element or also main semantic ID of the element.
@@ -1867,6 +2039,16 @@ export class Submodel
     IQualifiable,
     IHasDataSpecification
 {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>7; // Submodel
+  }
+
   /**
    * An extension of the element.
    */
@@ -2307,6 +2489,16 @@ export interface IRelationshipElement extends ISubmodelElement {
  */
 export class RelationshipElement extends Class implements IRelationshipElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>8; // RelationshipElement
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -2741,6 +2933,16 @@ export function* overAasSubmodelElements(): IterableIterator<AasSubmodelElements
  */
 export class SubmodelElementList extends Class implements ISubmodelElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>9; // SubmodelElementList
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -3151,6 +3353,16 @@ export class SubmodelElementList extends Class implements ISubmodelElement {
  */
 export class SubmodelElementCollection extends Class implements ISubmodelElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>10; // SubmodelElementCollection
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -3527,6 +3739,16 @@ export interface IDataElement extends ISubmodelElement {
  */
 export class Property extends Class implements IDataElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>11; // Property
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -3897,6 +4119,16 @@ export class Property extends Class implements IDataElement {
  * {@link MultiLanguageProperty.valueId}.
  */
 export class MultiLanguageProperty extends Class implements IDataElement {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>12; // MultiLanguageProperty
+  }
+
   /**
    * An extension of the element.
    */
@@ -4279,6 +4511,16 @@ export class MultiLanguageProperty extends Class implements IDataElement {
  */
 export class Range extends Class implements IDataElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>13; // Range
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -4639,6 +4881,16 @@ export class Range extends Class implements IDataElement {
  */
 export class ReferenceElement extends Class implements IDataElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>14; // ReferenceElement
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -4989,6 +5241,16 @@ export class ReferenceElement extends Class implements IDataElement {
  * source code in the value attribute.
  */
 export class Blob extends Class implements IDataElement {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>15; // Blob
+  }
+
   /**
    * An extension of the element.
    */
@@ -5351,6 +5613,16 @@ export class Blob extends Class implements IDataElement {
  */
 export class File extends Class implements IDataElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>16; // File
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -5705,6 +5977,16 @@ export class AnnotatedRelationshipElement
   extends Class
   implements IRelationshipElement
 {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>17; // AnnotatedRelationshipElement
+  }
+
   /**
    * An extension of the element.
    */
@@ -6090,6 +6372,16 @@ export class AnnotatedRelationshipElement
  * {@link EntityType.SelfManagedEntity}. They are not existing otherwise.
  */
 export class Entity extends Class implements ISubmodelElement {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>18; // Entity
+  }
+
   /**
    * An extension of the element.
    */
@@ -6608,6 +6900,16 @@ export function* overStateOfEvent(): IterableIterator<StateOfEvent> {
  */
 export class EventPayload extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>19; // EventPayload
+  }
+
+  /**
    * Reference to the source event element, including identification of
    * {@link AssetAdministrationShell}, {@link Submodel},
    * {@link ISubmodelElement}'s.
@@ -6819,6 +7121,16 @@ export interface IEventElement extends ISubmodelElement {
  * removed completely in future versions of the meta-model.
  */
 export class BasicEventElement extends Class implements IEventElement {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>20; // BasicEventElement
+  }
+
   /**
    * An extension of the element.
    */
@@ -7259,6 +7571,16 @@ export class BasicEventElement extends Class implements IEventElement {
  */
 export class Operation extends Class implements ISubmodelElement {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>21; // Operation
+  }
+
+  /**
    * An extension of the element.
    */
   extensions: Array<Extension> | null;
@@ -7671,6 +7993,16 @@ export class Operation extends Class implements ISubmodelElement {
  */
 export class OperationVariable extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>22; // OperationVariable
+  }
+
+  /**
    * Describes an argument or result of an operation via a submodel element
    */
   value: ISubmodelElement;
@@ -7763,6 +8095,16 @@ export class OperationVariable extends Class {
  * Thus, reasoning on capabilities is enabled.
  */
 export class Capability extends Class implements ISubmodelElement {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>23; // Capability
+  }
+
   /**
    * An extension of the element.
    */
@@ -8152,6 +8494,16 @@ export class ConceptDescription
   extends Class
   implements IIdentifiable, IHasDataSpecification
 {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>24; // ConceptDescription
+  }
+
   /**
    * An extension of the element.
    */
@@ -8557,6 +8909,16 @@ export function* overReferenceTypes(): IterableIterator<ReferenceTypes> {
  */
 export class Reference extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>25; // Reference
+  }
+
+  /**
    * Type of the reference.
    *
    * @remarks
@@ -8681,6 +9043,16 @@ export class Reference extends Class {
  * A key is a reference to an element by its ID.
  */
 export class Key extends Class {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>26; // Key
+  }
+
   /**
    * Denotes which kind of entity is referenced.
    *
@@ -9006,6 +9378,16 @@ export interface IAbstractLangString extends Class {
  */
 export class LangStringNameType extends Class implements IAbstractLangString {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>27; // LangStringNameType
+  }
+
+  /**
    * Language tag conforming to BCP 47
    */
   language: string;
@@ -9096,6 +9478,16 @@ export class LangStringNameType extends Class implements IAbstractLangString {
  * String with length 1023 maximum and minimum 1 characters and with language tags
  */
 export class LangStringTextType extends Class implements IAbstractLangString {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>28; // LangStringTextType
+  }
+
   /**
    * Language tag conforming to BCP 47
    */
@@ -9193,6 +9585,16 @@ export class LangStringTextType extends Class implements IAbstractLangString {
  * shall be no element with the same identifier in two different files.
  */
 export class Environment extends Class {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>29; // Environment
+  }
+
   /**
    * Asset administration shell
    */
@@ -9374,6 +9776,16 @@ export interface IDataSpecificationContent extends Class {
  * Embed the content of a data specification.
  */
 export class EmbeddedDataSpecification extends Class {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>30; // EmbeddedDataSpecification
+  }
+
   /**
    * Reference to the data specification
    */
@@ -9676,6 +10088,16 @@ export function* overDataTypeIec61360(): IterableIterator<DataTypeIec61360> {
  */
 export class LevelType extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>31; // LevelType
+  }
+
+  /**
    * Minimum of the value
    */
   min: boolean;
@@ -9780,6 +10202,16 @@ export class LevelType extends Class {
  */
 export class ValueReferencePair extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>32; // ValueReferencePair
+  }
+
+  /**
    * The value of the referenced concept definition of the value in {@link valueId}.
    */
   value: string;
@@ -9877,6 +10309,16 @@ export class ValueReferencePair extends Class {
  */
 export class ValueList extends Class {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>33; // ValueList
+  }
+
+  /**
    * A pair of a value together with its global unique id.
    */
   valueReferencePairs: Array<ValueReferencePair>;
@@ -9972,6 +10414,16 @@ export class LangStringPreferredNameTypeIec61360
   extends Class
   implements IAbstractLangString
 {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>34; // LangStringPreferredNameTypeIec61360
+  }
+
   /**
    * Language tag conforming to BCP 47
    */
@@ -10070,6 +10522,16 @@ export class LangStringShortNameTypeIec61360
   implements IAbstractLangString
 {
   /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>35; // LangStringShortNameTypeIec61360
+  }
+
+  /**
    * Language tag conforming to BCP 47
    */
   language: string;
@@ -10166,6 +10628,16 @@ export class LangStringDefinitionTypeIec61360
   extends Class
   implements IAbstractLangString
 {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>36; // LangStringDefinitionTypeIec61360
+  }
+
   /**
    * Language tag conforming to BCP 47
    */
@@ -10306,6 +10778,16 @@ export class DataSpecificationIec61360
   extends Class
   implements IDataSpecificationContent
 {
+  /**
+   * Indicate the runtime model type of the instance.
+   */
+  modelType(): ModelType {
+    // NOTE (mristin, 2022-12-03):
+    // We yield numbers instead of literals to avoid name lookups on platforms
+    // which do not provide JIT compilation of hot paths.
+    return <ModelType>37; // DataSpecificationIec61360
+  }
+
   /**
    * Preferred name
    *
