@@ -944,7 +944,13 @@ The commit messages follow the guidelines from https://chris.beams.io/posts/git-
 
 ## Changelog
 
-### 1.0.0-rc.3
+### 1.0.0 (2024-02-02)
+
+This is the first stable release. The release candidates stood
+the test of time, so we are now confident to publish a stable
+version.
+
+### 1.0.0-rc.3 (2023-09-08)
 
 * Update to aas-core-meta, codegen, testgen 4d7e59e, 7e264a0 and 
   9b43de2e (#13)
@@ -952,7 +958,7 @@ The commit messages follow the guidelines from https://chris.beams.io/posts/git-
   Notably, this fixes constraints AASd-131 and AASc-3a-010,
   propagating the changes from aas-core-meta.
 
-### 1.0.0-rc.2
+### 1.0.0-rc.2 (2023-06-28)
 
 * Update to aas-core-meta, codegen, testgen 44756fb, 607f65c,
   bf3720d7 (#7)
