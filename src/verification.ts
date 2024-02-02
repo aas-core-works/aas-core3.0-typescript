@@ -2406,7 +2406,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -2420,7 +2420,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -2783,7 +2783,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -2797,7 +2797,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -3088,7 +3088,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -3102,7 +3102,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -3293,7 +3293,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -3307,7 +3307,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -3596,7 +3596,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -3610,7 +3610,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -3827,7 +3827,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -3841,7 +3841,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -4057,7 +4057,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -4071,7 +4071,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -4132,7 +4132,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     }
 
     if (!(!(that.value !== null) || langStringsHaveUniqueLanguages(that.value))) {
-      yield new VerificationError("Value specifies no duplicate languages.");
+      yield new VerificationError("Value must specify unique languages.");
     }
 
     if (!(!(that.value !== null) || that.value.length >= 1)) {
@@ -4294,7 +4294,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -4308,7 +4308,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -4528,7 +4528,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -4542,7 +4542,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -4743,7 +4743,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -4757,7 +4757,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -4963,7 +4963,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -4977,7 +4977,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -5183,7 +5183,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -5197,7 +5197,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -5422,7 +5422,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -5436,7 +5436,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -5775,7 +5775,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -5789,7 +5789,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -6031,7 +6031,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -6045,7 +6045,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -6320,7 +6320,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -6334,7 +6334,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -6515,7 +6515,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.description !== null) || langStringsHaveUniqueLanguages(that.description)
       )
     ) {
-      yield new VerificationError("Description specifies no duplicate languages.");
+      yield new VerificationError("Description must specify unique languages.");
     }
 
     if (!(!(that.displayName !== null) || that.displayName.length >= 1)) {
@@ -6529,7 +6529,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         !(that.displayName !== null) || langStringsHaveUniqueLanguages(that.displayName)
       )
     ) {
-      yield new VerificationError("Display name specifies no duplicate languages.");
+      yield new VerificationError("Display name must specify unique languages.");
     }
 
     if (
@@ -7127,7 +7127,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
   ): IterableIterator<VerificationError> {
     if (!(that.text.length <= 255)) {
       yield new VerificationError(
-        "String shall have a maximum length of 1023 characters."
+        "String shall have a maximum length of 255 characters."
       );
     }
 
@@ -7149,7 +7149,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
   ): IterableIterator<VerificationError> {
     if (!(that.text.length <= 18)) {
       yield new VerificationError(
-        "String shall have a maximum length of 1023 characters."
+        "String shall have a maximum length of 18 characters."
       );
     }
 
@@ -7223,7 +7223,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     if (
       !(!(that.definition !== null) || langStringsHaveUniqueLanguages(that.definition))
     ) {
-      yield new VerificationError("Definition specifies no duplicate languages.");
+      yield new VerificationError("Definition must specify unique languages.");
     }
 
     if (!(!(that.shortName !== null) || that.shortName.length >= 1)) {
@@ -7235,7 +7235,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     if (
       !(!(that.shortName !== null) || langStringsHaveUniqueLanguages(that.shortName))
     ) {
-      yield new VerificationError("Short name specifies no duplicate languages.");
+      yield new VerificationError("Short name must specify unique languages.");
     }
 
     if (!(that.preferredName.length >= 1)) {
@@ -7243,7 +7243,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     }
 
     if (!langStringsHaveUniqueLanguages(that.preferredName)) {
-      yield new VerificationError("Preferred name specifies no duplicate languages.");
+      yield new VerificationError("Preferred name must specify unique languages.");
     }
 
     if (
