@@ -7054,17 +7054,22 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     context: boolean
   ): IterableIterator<VerificationError> {
     if (context === true) {
-      for (const error of this.transformWithContext(that.dataSpecification, context)) {
-        error.path.prepend(new PropertySegment(that, "dataSpecification"));
-        yield error;
-      }
-
       for (const error of this.transformWithContext(
         that.dataSpecificationContent,
         context
       )) {
         error.path.prepend(new PropertySegment(that, "dataSpecificationContent"));
         yield error;
+      }
+
+      if (that.dataSpecification !== null) {
+        for (const error of this.transformWithContext(
+          that.dataSpecification,
+          context
+        )) {
+          error.path.prepend(new PropertySegment(that, "dataSpecification"));
+          yield error;
+        }
       }
     }
   }
