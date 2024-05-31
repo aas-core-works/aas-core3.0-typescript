@@ -83,24 +83,39 @@ test("{cls_name_typescript} round-trip OK", () => {{
         Stripped(
             f"""\
 test("{cls_name_typescript} deserialization fail", () => {{
-{I}for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {{
-{II}const baseDir = path.join(
-{III}TestCommon.TEST_DATA_DIR,
-{III}"Json",
-{III}"SelfContained",
-{III}"Unexpected",
-{III}cause,
-{III}{typescript_common.string_literal(cls_name_json)}
-{II});
-
-{II}if (!fs.existsSync(baseDir)) {{
-{III}// No examples of {cls_name_typescript} exist for the failure cause.
+{I}for (
+{II}const causeDir of
+{II}TestCommon.findImmediateSubdirectories(
+{III}path.join(
+{IIII}TestCommon.TEST_DATA_DIR,
+{IIII}"Json",
+{IIII}"SelfContained",
+{IIII}"Unexpected",
+{IIII}"Unserializable"
+{III})
+{II})
+{I}) {{
+{II}// NOTE (mristin):
+{II}// Unlike other SDKs, we can not be really sure what additional properties
+{II}// JavaScript might bring about. Therefore, we leave out the tests with
+{II}// the validation of additional properties.
+{II}if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {{
 {III}continue;
 {II}}}
 
+{II}const clsDir = path.join(
+{III}causeDir,
+{III}{typescript_common.string_literal(cls_name_json)}
+{II});
+{II}if (!fs.existsSync(clsDir)) {{
+{III}// NOTE (mristin):
+{III}// Some classes indeed lack the invalid examples.
+{III}continue;
+{II}}} 
+
 {II}const pths = Array.from(
 {III}TestCommon.findFilesBySuffixRecursively(
-{IIII}baseDir,
+{IIII}clsDir,
 {IIII}".json"
 {III})
 {II});
@@ -127,24 +142,31 @@ test("{cls_name_typescript} deserialization fail", () => {{
         Stripped(
             f"""\
 test("{cls_name_typescript} verification fail", () => {{
-{I}for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {{
-{II}const baseDir = path.join(
-{III}TestCommon.TEST_DATA_DIR,
-{III}"Json",
-{III}"SelfContained",
-{III}"Unexpected",
-{III}cause,
+{I}for (
+{II}const causeDir of
+{II}TestCommon.findImmediateSubdirectories(
+{III}path.join(
+{IIII}TestCommon.TEST_DATA_DIR,
+{IIII}"Json",
+{IIII}"SelfContained",
+{IIII}"Unexpected",
+{IIII}"Invalid"
+{III})
+{II})
+{I}) {{
+{II}const clsDir = path.join(
+{III}causeDir,
 {III}{typescript_common.string_literal(cls_name_json)}
 {II});
-
-{II}if (!fs.existsSync(baseDir)) {{
-{III}// No examples of {cls_name_typescript} exist for the failure cause.
+{II}if (!fs.existsSync(clsDir)) {{
+{III}// NOTE (mristin):
+{III}// Some classes indeed lack the invalid examples.
 {III}continue;
-{II}}}
+{II}}} 
 
 {II}const pths = Array.from(
 {III}TestCommon.findFilesBySuffixRecursively(
-{IIII}baseDir,
+{IIII}clsDir,
 {IIII}".json"
 {III})
 {II});
@@ -236,24 +258,39 @@ test("{cls_name_typescript} round-trip OK", () => {{
         Stripped(
             f"""\
 test("{cls_name_typescript} deserialization fail", () => {{
-{I}for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {{
-{II}const baseDir = path.join(
-{III}TestCommon.TEST_DATA_DIR,
-{III}"Json",
-{III}"ContainedIn{container_cls_json}",
-{III}"Unexpected",
-{III}cause,
-{III}{typescript_common.string_literal(cls_name_json)}
-{II});
-
-{II}if (!fs.existsSync(baseDir)) {{
-{III}// No examples of {cls_name_typescript} exist for the failure cause.
+{I}for (
+{II}const causeDir of
+{II}TestCommon.findImmediateSubdirectories(
+{III}path.join(
+{IIII}TestCommon.TEST_DATA_DIR,
+{IIII}"Json",
+{IIII}"ContainedIn{container_cls_json}",
+{IIII}"Unexpected",
+{IIII}"Unserializable"
+{III})
+{II})
+{I}) {{
+{II}// NOTE (mristin):
+{II}// Unlike other SDKs, we can not be really sure what additional properties
+{II}// JavaScript might bring about. Therefore, we leave out the tests with
+{II}// the validation of additional properties.
+{II}if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {{
 {III}continue;
 {II}}}
 
+{II}const clsDir = path.join(
+{III}causeDir,
+{III}{typescript_common.string_literal(cls_name_json)}
+{II});
+{II}if (!fs.existsSync(clsDir)) {{
+{III}// NOTE (mristin):
+{III}// Some classes indeed lack the invalid examples.
+{III}continue;
+{II}}} 
+
 {II}const pths = Array.from(
 {III}TestCommon.findFilesBySuffixRecursively(
-{IIII}baseDir,
+{IIII}clsDir,
 {IIII}".json"
 {III})
 {II});
@@ -282,24 +319,31 @@ test("{cls_name_typescript} deserialization fail", () => {{
         Stripped(
             f"""\
 test("{cls_name_typescript} verification fail", () => {{
-{I}for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {{
-{II}const baseDir = path.join(
-{III}TestCommon.TEST_DATA_DIR,
-{III}"Json",
-{III}"ContainedIn{container_cls_json}",
-{III}"Unexpected",
-{III}cause,
+{I}for (
+{II}const causeDir of
+{II}TestCommon.findImmediateSubdirectories(
+{III}path.join(
+{IIII}TestCommon.TEST_DATA_DIR,
+{IIII}"Json",
+{IIII}"ContainedIn{container_cls_json}",
+{IIII}"Unexpected",
+{IIII}"Invalid"
+{III})
+{II})
+{I}) {{
+{II}const clsDir = path.join(
+{III}causeDir,
 {III}{typescript_common.string_literal(cls_name_json)}
 {II});
-
-{II}if (!fs.existsSync(baseDir)) {{
-{III}// No examples of {cls_name_typescript} exist for the failure cause.
+{II}if (!fs.existsSync(clsDir)) {{
+{III}// NOTE (mristin):
+{III}// Some classes indeed lack the invalid examples.
 {III}continue;
-{II}}}
+{II}}} 
 
 {II}const pths = Array.from(
 {III}TestCommon.findFilesBySuffixRecursively(
-{IIII}baseDir,
+{IIII}clsDir,
 {IIII}".json"
 {III})
 {II});
@@ -400,20 +444,6 @@ function assertSerializeDeserializeEqualsOriginal(
         ),
         Stripped(
             f"""\
-const CAUSES_FOR_DESERIALIZATION_FAILURE = [
-{I}"TypeViolation",
-{I}"RequiredViolation",
-{I}"EnumViolation",
-{I}"NullViolation",
-{I}// NOTE (mristin, 2022-12-09):
-{I}// Unlike other SDKs, we can not be really sure what additional properties
-{I}// JavaScript might bring about. Therefore, we leave out the tests with
-{I}// the validation of additional properties.
-{I}// "UnexpectedAdditionalProperty"
-];"""
-        ),
-        Stripped(
-            f"""\
 /**
  * Assert that the deserialization error equals the expected golden one,
  * or, if {{@link common.RECORD_MODE}} set, re-record the expected error.
@@ -434,7 +464,9 @@ function assertDeserializationErrorEqualsExpectedOrRecord(
 {I}}} else {{
 {II}if (!fs.existsSync(errorPath)) {{
 {III}throw new Error(
-{IIII}`The file with the recorded error does not exist: ${{errorPath}}`
+{IIII}`The file with the recorded deserialization error does ` +
+{IIII}`not exist: ${{errorPath}}; you probably want to set ` +
+{IIII}`the environment variable ${{TestCommon.RECORD_MODE_ENVIRONMENT_VARIABLE_NAME}}?`
 {III});
 {II}}}
 
@@ -482,7 +514,9 @@ function assertVerificationErrorsEqualExpectedOrRecord(
 {I}}} else {{
 {II}if (!fs.existsSync(errorsPath)) {{
 {III}throw new Error(
-{IIII}`The file with the recorded errors does not exist: ${{errorsPath}}`
+{IIII}`The file with the recorded verification errors ` +
+{IIII}`does not exist: ${{errorsPath}}; you probably want to set the environment ` +
+{IIII}`variable ${{TestCommon.RECORD_MODE_ENVIRONMENT_VARIABLE_NAME}}?`
 {III});
 {II}}}
 
@@ -498,7 +532,7 @@ function assertVerificationErrorsEqualExpectedOrRecord(
 {II}}}
 {I}}}
 }}"""
-        )
+        ),
     ]  # type: List[Stripped]
 
     environment_cls = symbol_table.must_find_concrete_class(Identifier("Environment"))

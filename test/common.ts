@@ -15,8 +15,11 @@ import { Path } from "../src/jsonization";
 // It is tedious to record manually all the expected error messages. Therefore we include this variable
 // to steer the automatic recording. We intentionally inter-twine the recording code with the test code
 // to keep them close to each other so that they are easier to maintain.
+export const RECORD_MODE_ENVIRONMENT_VARIABLE_NAME =
+  "AAS_CORE3_0_TYPESCRIPT_RECORD_MODE";
+
 const RECORD_MODE_TEXT =
-  process.env["AAS_CORE3_0_TYPESCRIPT_RECORD_MODE"]?.toLowerCase();
+  process.env[RECORD_MODE_ENVIRONMENT_VARIABLE_NAME]?.toLowerCase();
 export const RECORD_MODE: boolean =
   RECORD_MODE_TEXT === "true" || RECORD_MODE_TEXT === "1" || RECORD_MODE_TEXT === "on";
 
@@ -117,17 +120,6 @@ export function assertNoVerificationErrors(
   }
 }
 
-export const CAUSES_FOR_VERIFICATION_FAILURE = [
-  "DateTimeStampUtcViolationOnFebruary29th",
-  "MaxLengthViolation",
-  "MinLengthViolation",
-  "PatternViolation",
-  "InvalidValueExample",
-  "InvalidMinMaxExample",
-  "SetViolation",
-  "ConstraintViolation"
-];
-
 /**
  * Assert that `errors` either correspond to the errors recorded to the disk,
  * or re-record the errors, if {@link RECORD_MODE} is set.
@@ -156,6 +148,14 @@ export function assertExpectedOrRecordedVerificationErrors(
   if (RECORD_MODE) {
     fs.writeFileSync(errorsPath, got, "utf-8");
   } else {
+    if (!fs.existsSync(errorsPath)) {
+      throw new Error(
+        `The file with the recorded verification errors does not ` +
+          `exist: ${errorsPath}; you probably want to set the environment ` +
+          `variable ${RECORD_MODE_ENVIRONMENT_VARIABLE_NAME}?`
+      );
+    }
+
     const expected = fs.readFileSync(errorsPath, "utf-8");
     if (expected !== got) {
       throw new Error(
@@ -210,6 +210,23 @@ export function* findFilesBySuffixRecursively(
       if (filename.endsWith(suffix)) {
         yield pth;
       }
+    }
+  }
+}
+
+/**
+ * Iterate over all the immediate subdirectories `directory`.
+ *
+ * @param directory - to iterate through
+ */
+export function* findImmediateSubdirectories(
+  directory: string
+): IterableIterator<string> {
+  for (const filename of fs.readdirSync(directory)) {
+    const pth = path.join(directory, filename);
+    const stat = fs.lstatSync(pth);
+    if (stat.isDirectory()) {
+      yield pth;
     }
   }
 }
