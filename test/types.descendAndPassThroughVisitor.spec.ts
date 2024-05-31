@@ -77,7 +77,9 @@ function compareOrRecordTrace(instance: AasTypes.Class, expectedPath: string) {
   } else {
     if (!fs.existsSync(expectedPath)) {
       throw new Error(
-        `The file with the recorded trace does not exist: ${expectedPath}`
+        `The file with the recorded trace does not exist: ${expectedPath}; ` +
+          `you probably want to set the environment ` +
+          `variable ${TestCommon.RECORD_MODE_ENVIRONMENT_VARIABLE_NAME}?`
       );
     }
 

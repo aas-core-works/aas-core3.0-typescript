@@ -87,7 +87,9 @@ function compareOrRecordTrace(
 {I}}} else {{
 {II}if (!fs.existsSync(expectedPath)) {{
 {III}throw new Error(
-{IIII}`The file with the recorded trace does not exist: ${{expectedPath}}`
+{IIII}`The file with the recorded trace does not exist: ${{expectedPath}}; ` +
+{IIII}`you probably want to set the environment ` +
+{IIII}`variable ${{TestCommon.RECORD_MODE_ENVIRONMENT_VARIABLE_NAME}}?`
 {III});
 {II}}}
 

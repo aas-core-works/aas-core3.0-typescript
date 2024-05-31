@@ -45,18 +45,6 @@ function assertSerializeDeserializeEqualsOriginal(
   }
 }
 
-const CAUSES_FOR_DESERIALIZATION_FAILURE = [
-  "TypeViolation",
-  "RequiredViolation",
-  "EnumViolation",
-  "NullViolation"
-  // NOTE (mristin, 2022-12-09):
-  // Unlike other SDKs, we can not be really sure what additional properties
-  // JavaScript might bring about. Therefore, we leave out the tests with
-  // the validation of additional properties.
-  // "UnexpectedAdditionalProperty"
-];
-
 /**
  * Assert that the deserialization error equals the expected golden one,
  * or, if {@link common.RECORD_MODE} set, re-record the expected error.
@@ -76,7 +64,11 @@ function assertDeserializationErrorEqualsExpectedOrRecord(
     fs.writeFileSync(errorPath, got, "utf-8");
   } else {
     if (!fs.existsSync(errorPath)) {
-      throw new Error(`The file with the recorded error does not exist: ${errorPath}`);
+      throw new Error(
+        `The file with the recorded deserialization error does ` +
+          `not exist: ${errorPath}; you probably want to set ` +
+          `the environment variable ${TestCommon.RECORD_MODE_ENVIRONMENT_VARIABLE_NAME}?`
+      );
     }
 
     const expected = fs.readFileSync(errorPath, "utf-8").replace(/\r\n/g, "\n");
@@ -119,7 +111,9 @@ function assertVerificationErrorsEqualExpectedOrRecord(
   } else {
     if (!fs.existsSync(errorsPath)) {
       throw new Error(
-        `The file with the recorded errors does not exist: ${errorsPath}`
+        `The file with the recorded verification errors ` +
+          `does not exist: ${errorsPath}; you probably want to set the environment ` +
+          `variable ${TestCommon.RECORD_MODE_ENVIRONMENT_VARIABLE_NAME}?`
       );
     }
 
@@ -168,22 +162,31 @@ test("Extension round-trip OK", () => {
 });
 
 test("Extension deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Extension"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Extension exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Extension");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -200,22 +203,23 @@ test("Extension deserialization fail", () => {
 });
 
 test("Extension verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Extension"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Extension exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Extension");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -271,22 +275,31 @@ test("AdministrativeInformation round-trip OK", () => {
 });
 
 test("AdministrativeInformation deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AdministrativeInformation"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AdministrativeInformation exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "AdministrativeInformation");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -303,22 +316,23 @@ test("AdministrativeInformation deserialization fail", () => {
 });
 
 test("AdministrativeInformation verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AdministrativeInformation"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AdministrativeInformation exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "AdministrativeInformation");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -374,22 +388,31 @@ test("Qualifier round-trip OK", () => {
 });
 
 test("Qualifier deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Qualifier"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Qualifier exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Qualifier");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -406,22 +429,23 @@ test("Qualifier deserialization fail", () => {
 });
 
 test("Qualifier verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Qualifier"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Qualifier exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Qualifier");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -477,22 +501,31 @@ test("AssetAdministrationShell round-trip OK", () => {
 });
 
 test("AssetAdministrationShell deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AssetAdministrationShell"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AssetAdministrationShell exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "AssetAdministrationShell");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -509,22 +542,23 @@ test("AssetAdministrationShell deserialization fail", () => {
 });
 
 test("AssetAdministrationShell verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AssetAdministrationShell"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AssetAdministrationShell exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "AssetAdministrationShell");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -580,22 +614,31 @@ test("AssetInformation round-trip OK", () => {
 });
 
 test("AssetInformation deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AssetInformation"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AssetInformation exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "AssetInformation");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -612,22 +655,23 @@ test("AssetInformation deserialization fail", () => {
 });
 
 test("AssetInformation verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AssetInformation"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AssetInformation exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "AssetInformation");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -683,22 +727,31 @@ test("Resource round-trip OK", () => {
 });
 
 test("Resource deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Resource"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Resource exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Resource");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -715,22 +768,23 @@ test("Resource deserialization fail", () => {
 });
 
 test("Resource verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Resource"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Resource exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Resource");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -786,22 +840,31 @@ test("SpecificAssetId round-trip OK", () => {
 });
 
 test("SpecificAssetId deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "SpecificAssetId"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of SpecificAssetId exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "SpecificAssetId");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -818,22 +881,23 @@ test("SpecificAssetId deserialization fail", () => {
 });
 
 test("SpecificAssetId verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "SpecificAssetId"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of SpecificAssetId exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "SpecificAssetId");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -889,22 +953,31 @@ test("Submodel round-trip OK", () => {
 });
 
 test("Submodel deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Submodel"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Submodel exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Submodel");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -921,22 +994,23 @@ test("Submodel deserialization fail", () => {
 });
 
 test("Submodel verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Submodel"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Submodel exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Submodel");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -992,22 +1066,31 @@ test("RelationshipElement round-trip OK", () => {
 });
 
 test("RelationshipElement deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "RelationshipElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of RelationshipElement exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "RelationshipElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1024,22 +1107,23 @@ test("RelationshipElement deserialization fail", () => {
 });
 
 test("RelationshipElement verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "RelationshipElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of RelationshipElement exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "RelationshipElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1095,22 +1179,31 @@ test("SubmodelElementList round-trip OK", () => {
 });
 
 test("SubmodelElementList deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "SubmodelElementList"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of SubmodelElementList exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "SubmodelElementList");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1127,22 +1220,23 @@ test("SubmodelElementList deserialization fail", () => {
 });
 
 test("SubmodelElementList verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "SubmodelElementList"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of SubmodelElementList exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "SubmodelElementList");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1198,22 +1292,31 @@ test("SubmodelElementCollection round-trip OK", () => {
 });
 
 test("SubmodelElementCollection deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "SubmodelElementCollection"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of SubmodelElementCollection exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "SubmodelElementCollection");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1230,22 +1333,23 @@ test("SubmodelElementCollection deserialization fail", () => {
 });
 
 test("SubmodelElementCollection verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "SubmodelElementCollection"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of SubmodelElementCollection exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "SubmodelElementCollection");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1301,22 +1405,31 @@ test("Property round-trip OK", () => {
 });
 
 test("Property deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Property"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Property exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Property");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1333,22 +1446,23 @@ test("Property deserialization fail", () => {
 });
 
 test("Property verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Property"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Property exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Property");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1404,22 +1518,31 @@ test("MultiLanguageProperty round-trip OK", () => {
 });
 
 test("MultiLanguageProperty deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "MultiLanguageProperty"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of MultiLanguageProperty exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "MultiLanguageProperty");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1436,22 +1559,23 @@ test("MultiLanguageProperty deserialization fail", () => {
 });
 
 test("MultiLanguageProperty verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "MultiLanguageProperty"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of MultiLanguageProperty exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "MultiLanguageProperty");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1507,22 +1631,31 @@ test("Range round-trip OK", () => {
 });
 
 test("Range deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Range"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Range exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Range");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1539,22 +1672,23 @@ test("Range deserialization fail", () => {
 });
 
 test("Range verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Range"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Range exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Range");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1610,22 +1744,31 @@ test("ReferenceElement round-trip OK", () => {
 });
 
 test("ReferenceElement deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ReferenceElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ReferenceElement exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "ReferenceElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1642,22 +1785,23 @@ test("ReferenceElement deserialization fail", () => {
 });
 
 test("ReferenceElement verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ReferenceElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ReferenceElement exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "ReferenceElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1713,22 +1857,31 @@ test("Blob round-trip OK", () => {
 });
 
 test("Blob deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Blob"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Blob exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Blob");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1745,22 +1898,23 @@ test("Blob deserialization fail", () => {
 });
 
 test("Blob verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Blob"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Blob exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Blob");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1816,22 +1970,31 @@ test("File round-trip OK", () => {
 });
 
 test("File deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "File"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of File exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "File");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1848,22 +2011,23 @@ test("File deserialization fail", () => {
 });
 
 test("File verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "File"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of File exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "File");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1919,22 +2083,31 @@ test("AnnotatedRelationshipElement round-trip OK", () => {
 });
 
 test("AnnotatedRelationshipElement deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AnnotatedRelationshipElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AnnotatedRelationshipElement exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "AnnotatedRelationshipElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -1951,22 +2124,23 @@ test("AnnotatedRelationshipElement deserialization fail", () => {
 });
 
 test("AnnotatedRelationshipElement verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "AnnotatedRelationshipElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of AnnotatedRelationshipElement exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "AnnotatedRelationshipElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2022,22 +2196,31 @@ test("Entity round-trip OK", () => {
 });
 
 test("Entity deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Entity"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Entity exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Entity");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2054,22 +2237,23 @@ test("Entity deserialization fail", () => {
 });
 
 test("Entity verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Entity"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Entity exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Entity");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2120,22 +2304,31 @@ test("EventPayload round-trip OK", () => {
 });
 
 test("EventPayload deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "SelfContained",
       "Unexpected",
-      cause,
-      "EventPayload"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of EventPayload exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "EventPayload");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2152,22 +2345,23 @@ test("EventPayload deserialization fail", () => {
 });
 
 test("EventPayload verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "SelfContained",
       "Unexpected",
-      cause,
-      "EventPayload"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of EventPayload exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "EventPayload");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2223,22 +2417,31 @@ test("BasicEventElement round-trip OK", () => {
 });
 
 test("BasicEventElement deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "BasicEventElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of BasicEventElement exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "BasicEventElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2255,22 +2458,23 @@ test("BasicEventElement deserialization fail", () => {
 });
 
 test("BasicEventElement verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "BasicEventElement"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of BasicEventElement exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "BasicEventElement");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2326,22 +2530,31 @@ test("Operation round-trip OK", () => {
 });
 
 test("Operation deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Operation"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Operation exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Operation");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2358,22 +2571,23 @@ test("Operation deserialization fail", () => {
 });
 
 test("Operation verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Operation"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Operation exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Operation");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2429,22 +2643,31 @@ test("OperationVariable round-trip OK", () => {
 });
 
 test("OperationVariable deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "OperationVariable"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of OperationVariable exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "OperationVariable");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2461,22 +2684,23 @@ test("OperationVariable deserialization fail", () => {
 });
 
 test("OperationVariable verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "OperationVariable"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of OperationVariable exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "OperationVariable");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2532,22 +2756,31 @@ test("Capability round-trip OK", () => {
 });
 
 test("Capability deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Capability"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Capability exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Capability");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2564,22 +2797,23 @@ test("Capability deserialization fail", () => {
 });
 
 test("Capability verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Capability"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Capability exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Capability");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2635,22 +2869,31 @@ test("ConceptDescription round-trip OK", () => {
 });
 
 test("ConceptDescription deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ConceptDescription"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ConceptDescription exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "ConceptDescription");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2667,22 +2910,23 @@ test("ConceptDescription deserialization fail", () => {
 });
 
 test("ConceptDescription verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ConceptDescription"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ConceptDescription exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "ConceptDescription");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2738,22 +2982,31 @@ test("Reference round-trip OK", () => {
 });
 
 test("Reference deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Reference"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Reference exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Reference");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2770,22 +3023,23 @@ test("Reference deserialization fail", () => {
 });
 
 test("Reference verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Reference"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Reference exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Reference");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2841,22 +3095,31 @@ test("Key round-trip OK", () => {
 });
 
 test("Key deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Key"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Key exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Key");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2873,22 +3136,23 @@ test("Key deserialization fail", () => {
 });
 
 test("Key verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "Key"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Key exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Key");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2944,22 +3208,31 @@ test("LangStringNameType round-trip OK", () => {
 });
 
 test("LangStringNameType deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringNameType"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringNameType exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "LangStringNameType");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -2976,22 +3249,23 @@ test("LangStringNameType deserialization fail", () => {
 });
 
 test("LangStringNameType verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringNameType"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringNameType exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "LangStringNameType");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3047,22 +3321,31 @@ test("LangStringTextType round-trip OK", () => {
 });
 
 test("LangStringTextType deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringTextType"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringTextType exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "LangStringTextType");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3079,22 +3362,23 @@ test("LangStringTextType deserialization fail", () => {
 });
 
 test("LangStringTextType verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringTextType"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringTextType exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "LangStringTextType");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3145,22 +3429,31 @@ test("Environment round-trip OK", () => {
 });
 
 test("Environment deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "SelfContained",
       "Unexpected",
-      cause,
-      "Environment"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Environment exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "Environment");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3177,22 +3470,23 @@ test("Environment deserialization fail", () => {
 });
 
 test("Environment verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "SelfContained",
       "Unexpected",
-      cause,
-      "Environment"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of Environment exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "Environment");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3248,22 +3542,31 @@ test("EmbeddedDataSpecification round-trip OK", () => {
 });
 
 test("EmbeddedDataSpecification deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "EmbeddedDataSpecification"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of EmbeddedDataSpecification exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "EmbeddedDataSpecification");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3280,22 +3583,23 @@ test("EmbeddedDataSpecification deserialization fail", () => {
 });
 
 test("EmbeddedDataSpecification verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "EmbeddedDataSpecification"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of EmbeddedDataSpecification exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "EmbeddedDataSpecification");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3351,22 +3655,31 @@ test("LevelType round-trip OK", () => {
 });
 
 test("LevelType deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LevelType"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LevelType exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "LevelType");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3383,22 +3696,23 @@ test("LevelType deserialization fail", () => {
 });
 
 test("LevelType verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LevelType"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LevelType exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "LevelType");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3454,22 +3768,31 @@ test("ValueReferencePair round-trip OK", () => {
 });
 
 test("ValueReferencePair deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ValueReferencePair"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ValueReferencePair exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "ValueReferencePair");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3486,22 +3809,23 @@ test("ValueReferencePair deserialization fail", () => {
 });
 
 test("ValueReferencePair verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ValueReferencePair"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ValueReferencePair exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "ValueReferencePair");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3557,22 +3881,31 @@ test("ValueList round-trip OK", () => {
 });
 
 test("ValueList deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ValueList"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ValueList exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "ValueList");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3589,22 +3922,23 @@ test("ValueList deserialization fail", () => {
 });
 
 test("ValueList verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "ValueList"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of ValueList exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "ValueList");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3660,22 +3994,31 @@ test("LangStringPreferredNameTypeIec61360 round-trip OK", () => {
 });
 
 test("LangStringPreferredNameTypeIec61360 deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringPreferredNameTypeIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringPreferredNameTypeIec61360 exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "LangStringPreferredNameTypeIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3692,22 +4035,23 @@ test("LangStringPreferredNameTypeIec61360 deserialization fail", () => {
 });
 
 test("LangStringPreferredNameTypeIec61360 verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringPreferredNameTypeIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringPreferredNameTypeIec61360 exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "LangStringPreferredNameTypeIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3763,22 +4107,31 @@ test("LangStringShortNameTypeIec61360 round-trip OK", () => {
 });
 
 test("LangStringShortNameTypeIec61360 deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringShortNameTypeIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringShortNameTypeIec61360 exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "LangStringShortNameTypeIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3795,22 +4148,23 @@ test("LangStringShortNameTypeIec61360 deserialization fail", () => {
 });
 
 test("LangStringShortNameTypeIec61360 verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringShortNameTypeIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringShortNameTypeIec61360 exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "LangStringShortNameTypeIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3866,22 +4220,31 @@ test("LangStringDefinitionTypeIec61360 round-trip OK", () => {
 });
 
 test("LangStringDefinitionTypeIec61360 deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringDefinitionTypeIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringDefinitionTypeIec61360 exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "LangStringDefinitionTypeIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3898,22 +4261,23 @@ test("LangStringDefinitionTypeIec61360 deserialization fail", () => {
 });
 
 test("LangStringDefinitionTypeIec61360 verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "LangStringDefinitionTypeIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of LangStringDefinitionTypeIec61360 exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "LangStringDefinitionTypeIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -3969,22 +4333,31 @@ test("DataSpecificationIec61360 round-trip OK", () => {
 });
 
 test("DataSpecificationIec61360 deserialization fail", () => {
-  for (const cause of CAUSES_FOR_DESERIALIZATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "DataSpecificationIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of DataSpecificationIec61360 exist for the failure cause.
+      "Unserializable"
+    )
+  )) {
+    // NOTE (mristin):
+    // Unlike other SDKs, we can not be really sure what additional properties
+    // JavaScript might bring about. Therefore, we leave out the tests with
+    // the validation of additional properties.
+    if (path.basename(causeDir) == "UnexpectedAdditionalProperty") {
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const clsDir = path.join(causeDir, "DataSpecificationIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
+      continue;
+    }
+
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
@@ -4001,22 +4374,23 @@ test("DataSpecificationIec61360 deserialization fail", () => {
 });
 
 test("DataSpecificationIec61360 verification fail", () => {
-  for (const cause of TestCommon.CAUSES_FOR_VERIFICATION_FAILURE) {
-    const baseDir = path.join(
+  for (const causeDir of TestCommon.findImmediateSubdirectories(
+    path.join(
       TestCommon.TEST_DATA_DIR,
       "Json",
       "ContainedInEnvironment",
       "Unexpected",
-      cause,
-      "DataSpecificationIec61360"
-    );
-
-    if (!fs.existsSync(baseDir)) {
-      // No examples of DataSpecificationIec61360 exist for the failure cause.
+      "Invalid"
+    )
+  )) {
+    const clsDir = path.join(causeDir, "DataSpecificationIec61360");
+    if (!fs.existsSync(clsDir)) {
+      // NOTE (mristin):
+      // Some classes indeed lack the invalid examples.
       continue;
     }
 
-    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(baseDir, ".json"));
+    const pths = Array.from(TestCommon.findFilesBySuffixRecursively(clsDir, ".json"));
     pths.sort();
 
     for (const pth of pths) {
