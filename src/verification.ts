@@ -7062,14 +7062,9 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
         yield error;
       }
 
-      if (that.dataSpecification !== null) {
-        for (const error of this.transformWithContext(
-          that.dataSpecification,
-          context
-        )) {
-          error.path.prepend(new PropertySegment(that, "dataSpecification"));
-          yield error;
-        }
+      for (const error of this.transformWithContext(that.dataSpecification, context)) {
+        error.path.prepend(new PropertySegment(that, "dataSpecification"));
+        yield error;
       }
     }
   }
@@ -7259,7 +7254,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
       )
     ) {
       yield new VerificationError(
-        "Constraint AASc-002: preferred name shall be provided at " +
+        "Constraint AASc-3a-002: preferred name shall be provided at " +
           "least in English."
       );
     }
@@ -7709,12 +7704,6 @@ export function* verifyPathType(that: string): IterableIterator<VerificationErro
   if (!(that.length <= 2000)) {
     yield new VerificationError(
       "Identifier shall have a maximum length of 2000 characters."
-    );
-  }
-
-  if (!matchesRfc8089Path(that)) {
-    yield new VerificationError(
-      "The value must represent a valid file URI scheme according " + "to RFC 8089."
     );
   }
 }
