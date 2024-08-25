@@ -11990,6 +11990,12 @@ export function embeddedDataSpecificationFromJsonable(
     );
   }
 
+  if (setter.dataSpecification === null) {
+    return newDeserializationError<AasTypes.EmbeddedDataSpecification>(
+      "The required property 'dataSpecification' is missing"
+    );
+  }
+
   return new AasCommon.Either<AasTypes.EmbeddedDataSpecification, DeserializationError>(
     new AasTypes.EmbeddedDataSpecification(
       setter.dataSpecificationContent,
@@ -16021,9 +16027,7 @@ class Serializer extends AasTypes.AbstractTransformer<JsonObject> {
       that.dataSpecificationContent
     );
 
-    if (that.dataSpecification !== null) {
-      jsonable["dataSpecification"] = this.transform(that.dataSpecification);
-    }
+    jsonable["dataSpecification"] = this.transform(that.dataSpecification);
 
     return jsonable;
   }
