@@ -3409,12 +3409,12 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     if (
       !(
         !(
-          that.value !== null &&
-          (that.typeValueListElement == AasTypes.AasSubmodelElements.Property ||
-            that.typeValueListElement == AasTypes.AasSubmodelElements.Range)
+          that.typeValueListElement == AasTypes.AasSubmodelElements.Property ||
+          that.typeValueListElement == AasTypes.AasSubmodelElements.Range
         ) ||
         (that.valueTypeListElement !== null &&
-          propertiesOrRangesHaveValueType(that.value, that.valueTypeListElement))
+          (that.value === null ||
+            propertiesOrRangesHaveValueType(that.value, that.valueTypeListElement)))
       )
     ) {
       yield new VerificationError(
