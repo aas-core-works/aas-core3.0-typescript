@@ -6882,7 +6882,7 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
             (i) =>
               !(
                 AasCommon.at(that.keys, i).type == AasTypes.KeyTypes.SubmodelElementList
-              ) || matchesXsPositiveInteger(AasCommon.at(that.keys, i + 1).value)
+              ) || matchesXsNonNegativeInteger(AasCommon.at(that.keys, i + 1).value)
           )
         )
       )
@@ -7054,16 +7054,16 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     context: boolean
   ): IterableIterator<VerificationError> {
     if (context === true) {
+      for (const error of this.transformWithContext(that.dataSpecification, context)) {
+        error.path.prepend(new PropertySegment(that, "dataSpecification"));
+        yield error;
+      }
+
       for (const error of this.transformWithContext(
         that.dataSpecificationContent,
         context
       )) {
         error.path.prepend(new PropertySegment(that, "dataSpecificationContent"));
-        yield error;
-      }
-
-      for (const error of this.transformWithContext(that.dataSpecification, context)) {
-        error.path.prepend(new PropertySegment(that, "dataSpecification"));
         yield error;
       }
     }
@@ -7369,6 +7369,24 @@ export function* verify(
   recurse = true
 ): IterableIterator<VerificationError> {
   yield* VERIFIER.transformWithContext(that, recurse);
+}
+
+/**
+ * Verify the constraints of `that` value.
+ *
+ * @param that - to be verified
+ * @returns errors, if any
+ */
+export function* verifyXmlSerializableString(
+  that: string
+): IterableIterator<VerificationError> {
+  if (!matchesXmlSerializableString(that)) {
+    yield new VerificationError(
+      "Constraint AASd-130: An attribute with data type 'string' " +
+        "shall consist of these characters only: " +
+        "^[\\x09\\x0A\\x0D\\x20-\\uD7FF\\uE000-\\uFFFD\\U00010000-\\U0010FFFF]*$."
+    );
+  }
 }
 
 /**
@@ -7743,10 +7761,15 @@ export function* verifyQualifierType(
  * @returns errors, if any
  */
 export function* verifyValueDataType(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   that: string
 ): IterableIterator<VerificationError> {
-  // There is no verification specified.
+  if (!matchesXmlSerializableString(that)) {
+    yield new VerificationError(
+      "Constraint AASd-130: An attribute with data type 'string' " +
+        "shall consist of these characters only: " +
+        "^[\\x09\\x0A\\x0D\\x20-\\uD7FF\\uE000-\\uFFFD\\U00010000-\\U0010FFFF]*$."
+    );
+  }
 }
 
 /**
