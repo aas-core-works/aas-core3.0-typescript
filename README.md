@@ -944,6 +944,13 @@ The commit messages follow the guidelines from https://chris.beams.io/posts/git-
 
 ## Changelog
 
+### 1.0.4 (2025-10-20)
+
+- Fix references index constraint where indices in references were erroneously
+  assumed to be positive integers.
+- Allow Value Data Type to be empty.
+- Fix invalid order of the attributes of `EmbeddedDataSpecification`.
+
 ### 1.0.3 (2024-04-16)
 
 The `dataSpecification` field in `EmbeddedDataSpecification` is made
