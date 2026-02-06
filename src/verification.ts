@@ -259,50 +259,66 @@ export function matchesMimeType(text: string): boolean {
   return REGEXP_MATCHES_MIME_TYPE.test(text);
 }
 
-function constructMatchesRfc8089Path(): RegExp {
-  const h16 = "[0-9A-Fa-f]{1,4}";
-  const decOctet = "([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])";
-  const ipv4address = `${decOctet}\\.${decOctet}\\.${decOctet}\\.${decOctet}`;
-  const ls32 = `(${h16}:${h16}|${ipv4address})`;
-  const ipv6address = `((${h16}:){6}${ls32}|::(${h16}:){5}${ls32}|(${h16})?::(${h16}:){4}${ls32}|((${h16}:)?${h16})?::(${h16}:){3}${ls32}|((${h16}:){0,2}${h16})?::(${h16}:){2}${ls32}|((${h16}:){0,3}${h16})?::${h16}:${ls32}|((${h16}:){0,4}${h16})?::${ls32}|((${h16}:){0,5}${h16})?::${h16}|((${h16}:){0,6}${h16})?::)`;
-  const unreserved = "[a-zA-Z0-9\\-._~]";
-  const subDelims = "[!$&'()*+,;=]";
-  const ipvfuture = `[vV][0-9A-Fa-f]+\\.(${unreserved}|${subDelims}|:)+`;
-  const ipLiteral = `\\[(${ipv6address}|${ipvfuture})\\]`;
-  const pctEncoded = "%[0-9A-Fa-f][0-9A-Fa-f]";
-  const regName = `(${unreserved}|${pctEncoded}|${subDelims})*`;
-  const host = `(${ipLiteral}|${ipv4address}|${regName})`;
-  const fileAuth = `(localhost|${host})`;
-  const pchar = `(${unreserved}|${pctEncoded}|${subDelims}|[:@])`;
-  const segmentNz = `(${pchar})+`;
-  const segment = `(${pchar})*`;
-  const pathAbsolute = `/(${segmentNz}(/${segment})*)?`;
-  const authPath = `(${fileAuth})?${pathAbsolute}`;
-  const localPath = `${pathAbsolute}`;
-  const fileHierPart = `(//${authPath}|${localPath})`;
-  const fileScheme = "file";
-  const fileUri = `${fileScheme}:${fileHierPart}`;
-  const pattern = `^${fileUri}$`;
+function constructMatchesRfc2396(): RegExp {
+  const alphanum = "[a-zA-Z0-9]";
+  const mark = "[-_.!~*'()]";
+  const unreserved = `(${alphanum}|${mark})`;
+  const hex = "([0-9]|[aA]|[bB]|[cC]|[dD]|[eE]|[fF]|[aA]|[bB]|[cC]|[dD]|[eE]|[fF])";
+  const escaped = `%${hex}${hex}`;
+  const pchar = `(${unreserved}|${escaped}|[:@&=+$,])`;
+  const param = `(${pchar})*`;
+  const segment = `(${pchar})*(;${param})*`;
+  const pathSegments = `${segment}(/${segment})*`;
+  const absPath = `/${pathSegments}`;
+  const scheme = "[a-zA-Z][a-zA-Z0-9+\\-.]*";
+  const userinfo = `(${unreserved}|${escaped}|[;:&=+$,])*`;
+  const domainlabel = `(${alphanum}|${alphanum}(${alphanum}|-)*${alphanum})`;
+  const toplabel = `([a-zA-Z]|[a-zA-Z](${alphanum}|-)*${alphanum})`;
+  const hostname = `(${domainlabel}\\.)*${toplabel}(\\.)?`;
+  const ipv4address = "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+";
+  const host = `(${hostname}|${ipv4address})`;
+  const port = "[0-9]*";
+  const hostport = `${host}(:${port})?`;
+  const server = `((${userinfo}@)?${hostport})?`;
+  const regName = `(${unreserved}|${escaped}|[$,;:@&=+])+`;
+  const authority = `(${server}|${regName})`;
+  const netPath = `//${authority}(${absPath})?`;
+  const reserved = "[;/?:@&=+$,]";
+  const uric = `(${reserved}|${unreserved}|${escaped})`;
+  const query = `(${uric})*`;
+  const hierPart = `(${netPath}|${absPath})(\\?${query})?`;
+  const uricNoSlash = `(${unreserved}|${escaped}|[;?:@&=+$,])`;
+  const opaquePart = `${uricNoSlash}(${uric})*`;
+  const absoluteuri = `${scheme}:(${hierPart}|${opaquePart})`;
+  const fragment = `(${uric})*`;
+  const relSegment = `(${unreserved}|${escaped}|[;@&=+$,])+`;
+  const relPath = `${relSegment}(${absPath})?`;
+  const relativeuri = `(${netPath}|${absPath}|${relPath})(\\?${query})?`;
+  const uriReference = `^(${absoluteuri}|${relativeuri})?(#${fragment})?$`;
 
-  return new RegExp(pattern, "u");
+  return new RegExp(uriReference, "u");
 }
 
-const REGEXP_MATCHES_RFC_8089_PATH = constructMatchesRfc8089Path();
+const REGEXP_MATCHES_RFC_2396 = constructMatchesRfc2396();
 
 /**
- * Check that `text` is a path conforming to the pattern of RFC 8089.
+ * Check that `text` matches to the URI pattern defined in RFC 2396
  *
  * @remarks
  *
  * The definition has been taken from:
- * https://datatracker.ietf.org/doc/html/rfc8089
+ * https://datatracker.ietf.org/doc/html/rfc2396
+ *
+ * Note that RFX 2396 alone is not enough for specifying `xs:anyURI` for
+ * XSD version 1.0, as that specifies URI together with the amendment of
+ * RFC 2732.
  *
  * @param text - Text to be checked
  *
  * @returns True if the `text` conforms to the pattern
  */
-export function matchesRfc8089Path(text: string): boolean {
-  return REGEXP_MATCHES_RFC_8089_PATH.test(text);
+export function matchesRfc2396(text: string): boolean {
+  return REGEXP_MATCHES_RFC_2396.test(text);
 }
 
 function constructMatchesBcp47(): RegExp {
@@ -1722,11 +1738,13 @@ export function isModelReferenceToReferable(reference: AasTypes.Reference): bool
 export function idShortsAreUnique(referables: Iterable<AasTypes.IReferable>): boolean {
   const idShortSet = new Set<string>();
   for (const referable of referables) {
-    if (idShortSet.has(referable.idShort)) {
-      return false;
-    }
+    if (referable.idShort !== null) {
+      if (idShortSet.has(referable.idShort)) {
+        return false;
+      }
 
-    idShortSet.add(referable.idShort);
+      idShortSet.add(referable.idShort);
+    }
   }
 
   return true;
@@ -6101,7 +6119,8 @@ class Verifier extends AasTypes.AbstractTransformerWithContext<
     ) {
       yield new VerificationError(
         "Constraint AASd-134: For an Operation the ID-short of all " +
-          "values of input, output and in/output variables."
+          "values of input, output and in/output variables shall be " +
+          "unique."
       );
     }
 
@@ -7722,6 +7741,13 @@ export function* verifyPathType(that: string): IterableIterator<VerificationErro
   if (!(that.length <= 2000)) {
     yield new VerificationError(
       "Identifier shall have a maximum length of 2000 characters."
+    );
+  }
+
+  if (!matchesRfc2396(that)) {
+    yield new VerificationError(
+      "String with max 2048 and min 1 characters conformant to " +
+        "a URI as per RFC 2396."
     );
   }
 }
